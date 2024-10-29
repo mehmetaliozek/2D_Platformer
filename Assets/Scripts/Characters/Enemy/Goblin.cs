@@ -9,6 +9,8 @@ public class Goblin : Character
 
     public LayerMask playerLayer;
 
+    public ParticleSystem damageEffect;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -17,18 +19,15 @@ public class Goblin : Character
         positionA = transform.position;
         positionB = transform.position + (transform.localScale * range);
         targetPosition = positionB;
-        
-        healtBar.SetMaxHealth(stat.health);
+
+        healtBar.SetMaxValue(stat.health);
     }
 
     private void Update()
     {
         if (isDeath) return;
         if (dash.isDashing) return;
-        if (knockback.isKnockback){
-            StopCoroutine(dash.DashCoroutine(rb, transform, tr));
-            return;
-        }
+        if (knockback.isKnockback) return;
 
         Move(0);
         Turn(1);

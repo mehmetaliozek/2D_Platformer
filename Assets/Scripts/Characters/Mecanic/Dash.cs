@@ -8,15 +8,10 @@ public class Dash
     [HideInInspector]
     public bool isDashing;
 
-    [HideInInspector]
-    public bool isWaiting;
-
     [SerializeField]
     private float dashingPower = 6f;
-    [SerializeField]
-    private float dashingTime = 0.4f;
-    [SerializeField]
-    private float dashingCooldown = 1f;
+    public float dashingTime = 0.4f;
+    public float dashingCooldown = 1f;
 
     public IEnumerator DashCoroutine(Rigidbody2D rb, Transform tf, TrailRenderer tr, float waiting = 0f)
     {

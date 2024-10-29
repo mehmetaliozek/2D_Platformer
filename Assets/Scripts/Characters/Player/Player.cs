@@ -9,6 +9,8 @@ public class Player : Character
 
     [SerializeField]
     private ParticleSystem dust;
+    [SerializeField]
+    private Bar coolDownBar;
 
     void Start()
     {
@@ -17,7 +19,9 @@ public class Player : Character
         animator.SetTrigger(AnimationParametre.Spawn.ToString());
         sword = GetComponentInChildren<Sword>();
 
-        healtBar.SetMaxHealth(stat.health);
+        healtBar.SetMaxValue(stat.health);
+        coolDownBar.SetMaxValue(1);
+        coolDownBar.animationDuration = dash.dashingCooldown * 2;
     }
 
     private void Update()
@@ -83,6 +87,7 @@ public class Player : Character
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && dash.canDash)
         {
+            coolDownBar.SetValue(0);
             animator.SetTrigger(AnimationParametre.Dash.ToString());
             if (!isGrounded)
             {
@@ -90,12 +95,25 @@ public class Player : Character
                 animator.SetBool(AnimationParametre.IsJumpRun.ToString(), false);
             }
             StartCoroutine(dash.DashCoroutine(rb, transform, tr));
+            StartCoroutine(SetCoolDownValueCoroutine());
         }
+    }
+
+    private IEnumerator SetCoolDownValueCoroutine()
+    {
+        yield return new WaitForSeconds(dash.dashingCooldown + dash.dashingTime);
+        coolDownBar.SetValue(1);
     }
 
     protected override void Attack()
     {
         sword.Attack();
+    }
+
+    public new void Hit(float damage)
+    {
+        FindObjectOfType<CameraController>().TriggerShake(0.1f);
+        base.Hit(damage);
     }
 
     private void NextLevel()

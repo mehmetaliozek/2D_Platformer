@@ -18,10 +18,11 @@ public class Sword : MonoBehaviour
             animator.SetTrigger(AnimationParametre.Attack.ToString());
             foreach (var character in characters)
             {
-                if (character.knockback.isKnockback) continue;
                 character.Hit(GetComponentInParent<Character>().stat.damage);
-                Vector2 direction = (transform.position - character.transform.position).normalized;
-                character.knockback.KnockbackCoroutine(character.GetComponent<Rigidbody2D>(), direction);
+                (character as Goblin).damageEffect.Play();
+                if (character.knockback.isKnockback) continue;
+                Vector2 direction = -(transform.position - character.transform.position).normalized;
+                StartCoroutine(character.knockback.KnockbackCoroutine(character.GetComponent<Rigidbody2D>(), direction));
             }
         }
     }

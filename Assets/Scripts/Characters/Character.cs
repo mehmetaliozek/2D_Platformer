@@ -8,7 +8,7 @@ public abstract class Character : MonoBehaviour
     public Knockback knockback;
 
     [SerializeField]
-    protected HealtBar healtBar;
+    protected Bar healtBar;
 
     [SerializeField]
     protected Animator animator;
@@ -37,7 +37,7 @@ public abstract class Character : MonoBehaviour
         StartCoroutine(HitCoroutine());
 
         stat.health -= damage;
-        healtBar.SetHealth(stat.health);
+        healtBar.SetValue(stat.health);
 
         if (stat.health <= 0)
         {

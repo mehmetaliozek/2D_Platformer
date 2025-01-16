@@ -20,7 +20,7 @@ public class Dash
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         yield return new WaitForSeconds(waiting);
-        rb.velocity = new Vector2(tf.localScale.x * dashingPower, 0f);
+        rb.linearVelocity = new Vector2(tf.localScale.x * dashingPower, 0f);
         tr.emitting = true;
         yield return new WaitForSeconds(dashingTime);
         tr.emitting = false;

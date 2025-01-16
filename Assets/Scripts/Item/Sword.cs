@@ -1,23 +1,27 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-
     [SerializeField]
     private Animator animator;
 
-    private bool isAttacking = false;
+    [SerializeField]
+    private Transform attackPoint;
 
-    private readonly List<Character> characters = new();
+    [SerializeField]
+    private LayerMask enemyLayers;
+
+    private bool isAttacking = false;
 
     public void Attack()
     {
         if (Input.GetKey(KeyCode.Mouse0) && !isAttacking)
         {
             animator.SetTrigger(AnimationParametre.Attack.ToString());
-            foreach (var character in characters)
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, 0.5f, enemyLayers);
+            foreach (Collider2D enemy in hitEnemies)
             {
+                Character character = enemy.GetComponent<Character>();
                 character.Hit(GetComponentInParent<Character>().stat.damage);
                 (character as Goblin).damageEffect.Play();
                 if (character.knockback.isKnockback) continue;
@@ -30,20 +34,4 @@ public class Sword : MonoBehaviour
     public void StartAttack() => isAttacking = true;
 
     public void EndAttack() => isAttacking = false;
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag(Tag.Goblin))
-        {
-            characters.Add(other.GetComponent<Character>());
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag(Tag.Goblin) && characters.Contains(other.GetComponent<Character>()))
-        {
-            characters.Remove(other.GetComponent<Character>());
-        }
-    }
 }

@@ -1,16 +1,21 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : Character
 {
     public Dive dive;
     private Sword sword;
     private bool isInGate;
+    private bool isGetKey;
 
     [SerializeField]
     private ParticleSystem dust;
     [SerializeField]
     private Bar coolDownBar;
+
+    [SerializeField]
+    private GameObject infoPanelGate;
 
     void Start()
     {
@@ -26,6 +31,18 @@ public class Player : Character
 
     private void Update()
     {
+        if (isInGate)
+        {
+            Vector3 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
+            Vector3 objScale = transform.localScale / 2;
+
+            if (viewportPos.y - objScale.y > 1)
+            {
+                LevelManager.Instance.CompleteLevel();
+                isInGate = false;
+            }
+            return;
+        }
         if (isDeath) return;
         if (dash.isDashing) return;
         if (knockback.isKnockback) return;
@@ -38,7 +55,6 @@ public class Player : Character
         Dash();
         Attack();
         Dive();
-        NextLevel();
     }
 
     private void Dive()
@@ -51,7 +67,7 @@ public class Player : Character
 
     protected override void Move(float moveInput)
     {
-        rb.velocity = new Vector2(moveInput * stat.moveSpeed, rb.velocity.y);
+        rb.linearVelocity = new Vector2(moveInput * stat.moveSpeed, rb.linearVelocity.y);
         animator.SetFloat(AnimationParametre.Velocity, Mathf.Abs(moveInput));
     }
 
@@ -76,7 +92,7 @@ public class Player : Character
         if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && isGrounded)
         {
             dust.Play();
-            rb.velocity = new Vector2(rb.velocity.x, stat.jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, stat.jumpForce);
         }
 
         animator.SetBool(AnimationParametre.IsJumpIdle.ToString(), !isGrounded && moveInput == 0);
@@ -112,16 +128,13 @@ public class Player : Character
 
     public new void Hit(float damage)
     {
-        FindObjectOfType<CameraController>().TriggerShake(0.1f);
+        FindAnyObjectByType<CameraController>().TriggerShake(0.1f);
         base.Hit(damage);
     }
 
-    private void NextLevel()
+    public void SetKey()
     {
-        if (Input.GetKeyDown(KeyCode.E) && isInGate)
-        {
-            LevelManager.Instance.CompleteLevel();
-        }
+        isGetKey = true;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -139,17 +152,33 @@ public class Player : Character
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag(Tag.Gate))
+        if (other.gameObject.CompareTag(Tag.Gate) && isGetKey)
         {
             isInGate = true;
+            Camera.main.GetComponent<CameraController>().LevelEnding();
+            rb.linearVelocity = Vector2.zero;
+            rb.AddForceY(50f, ForceMode2D.Impulse);
+
+            int currentLevel = int.Parse(SceneManager.GetActiveScene().name.Split(" ")[1]);
+            int openedLevelCount = PlayerPrefs.GetInt(PlayerPrefKey.OpenedLevelCount, 1);
+
+            if (currentLevel == openedLevelCount)
+            {
+                openedLevelCount++;
+                PlayerPrefs.SetInt(PlayerPrefKey.OpenedLevelCount, openedLevelCount);
+            }
+        }
+        else
+        {
+            //TODO anahtar isteme gelsin
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag(Tag.Gate))
+        if (other.gameObject.CompareTag(Tag.Gate) && !isGetKey)
         {
-            isInGate = false;
+            //TODO anahtar isteme gitsin
         }
     }
 }

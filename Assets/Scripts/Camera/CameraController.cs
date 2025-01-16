@@ -20,25 +20,33 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 desiredPosition = target.position + Vector3.back;
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        transform.position = smoothedPosition;
-
-        if (currentShakeDuration > 0)
+        if (target != null)
         {
-            transform.localPosition = initialPosition + Random.insideUnitSphere * shakeMagnitude;
+            Vector3 desiredPosition = target.position + Vector3.back;
+            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+            transform.position = smoothedPosition;
 
-            currentShakeDuration -= Time.deltaTime * dampingSpeed;
-        }
-        else
-        {
-            currentShakeDuration = 0f;
-            initialPosition = transform.position;
+            if (currentShakeDuration > 0)
+            {
+                transform.localPosition = initialPosition + Random.insideUnitSphere * shakeMagnitude;
+
+                currentShakeDuration -= Time.deltaTime * dampingSpeed;
+            }
+            else
+            {
+                currentShakeDuration = 0f;
+                initialPosition = transform.position;
+            }
         }
     }
 
     public void TriggerShake(float duration = 0.5f)
     {
         currentShakeDuration = duration;
+    }
+
+    public void LevelEnding()
+    {
+        target = null;
     }
 }

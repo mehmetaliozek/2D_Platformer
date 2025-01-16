@@ -6,6 +6,7 @@ public class Goblin : Character
     private Vector2 positionA;
     private Vector2 positionB;
     private Vector2 targetPosition;
+    private bool isRemoved = false;
 
     public LayerMask playerLayer;
 
@@ -25,7 +26,15 @@ public class Goblin : Character
 
     private void Update()
     {
-        if (isDeath) return;
+        if (isDeath)
+        {
+            if (!isRemoved)
+            {
+                RemoveThis();
+                isRemoved = true;
+            }
+            return;
+        }
         if (dash.isDashing) return;
         if (knockback.isKnockback) return;
 
@@ -68,7 +77,7 @@ public class Goblin : Character
 
         if (hit.collider != null && hit.collider.gameObject.CompareTag(Tag.Ground) && isGrounded)
         {
-            rb.velocity = new Vector2(rb.velocity.x, stat.jumpForce);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, stat.jumpForce);
         }
 
         animator.SetBool(AnimationParametre.IsJumpRun.ToString(), !isGrounded);
@@ -93,5 +102,10 @@ public class Goblin : Character
     protected override void Attack()
     {
 
+    }
+
+    public void RemoveThis()
+    {
+        GameObject.FindGameObjectWithTag(Tag.GameManager).GetComponent<GameManager>().RemoveEnemy(this, positionA);
     }
 }

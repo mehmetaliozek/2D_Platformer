@@ -17,7 +17,7 @@ public class Player : Character
     [SerializeField]
     private GameObject infoPanelGate;
 
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<TrailRenderer>();

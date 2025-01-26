@@ -1,3 +1,6 @@
+using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -72,16 +75,40 @@ public class LevelManager : MonoBehaviour
         PanelOpener(winPanel);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    IEnumerator GameOverCoroutine(float duration)
     {
-        if (other.CompareTag(Tag.Player))
+        float elapsed = 0f;
+
+        gameOverPanel.SetActive(true);
+
+        Image gameOverImage = gameOverPanel.GetComponent<Image>();
+        Color startedColor = gameOverImage.color.WithAlpha(1);
+        TextMeshProUGUI gameOverText = gameOverPanel.GetComponentInChildren<TextMeshProUGUI>();
+
+        while (elapsed <= duration)
         {
-            PanelOpener(gameOverPanel);
+            gameOverImage.color = Color.black.WithAlpha(Mathf.Clamp01(elapsed / duration));
+            gameOverText.color = Color.white.WithAlpha(elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
         }
-        else if (other.CompareTag(Tag.Goblin))
+        gameOverImage.color = startedColor;
+        gameOverText.color = Color.white;
+        yield return new WaitForSeconds(duration);
+        SceneLaoder(1);
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        switch (collision.gameObject.tag)
         {
-            other.gameObject.SetActive(false);
-            other.gameObject.GetComponent<Goblin>().RemoveThis();
+            case Tag.Player:
+                StartCoroutine(GameOverCoroutine(1f));
+                break;
+            case Tag.Goblin:
+                collision.gameObject.SetActive(false);
+                collision.gameObject.GetComponent<Goblin>().RemoveThis();
+                break;
         }
     }
 }

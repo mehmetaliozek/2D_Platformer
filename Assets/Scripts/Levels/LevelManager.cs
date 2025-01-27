@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
@@ -10,7 +11,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance { get; private set; }
 
     [SerializeField]
-    private GameObject gameOverPanel;
+    private GameObject sceneLoadPanel;
 
     [SerializeField]
     private GameObject winPanel;
@@ -29,6 +30,12 @@ public class LevelManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private void Start()
+    {
+        SetSceneLoadPanelTitle(SceneManager.GetActiveScene().name);
+        StartCoroutine(FadeAndLoadSceneCoroutine(1.5f, 1f, 0f, -1));
     }
 
     public void PanelOpener(GameObject panel)
@@ -50,6 +57,16 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void CompleteLevel()
+    {
+        PanelOpener(winPanel);
+    }
+
+    public void SetSceneLoadPanelTitle(string title)
+    {
+        sceneLoadPanel.GetComponentInChildren<TextMeshProUGUI>().text = title;
+    }
+
     public void SceneLaoder(int sceneLoadOptionsIndex)
     {
         Time.timeScale = 1;
@@ -57,6 +74,9 @@ public class LevelManager : MonoBehaviour
         SceneLoadOptions sceneLoadOptions = (SceneLoadOptions)sceneLoadOptionsIndex;
         switch (sceneLoadOptions)
         {
+            case SceneLoadOptions.Main:
+                SceneManager.LoadScene(0);
+                break;
             case SceneLoadOptions.Restart:
                 SceneManager.LoadScene(activeSceneBuildIndex);
                 break;
@@ -64,38 +84,41 @@ public class LevelManager : MonoBehaviour
                 if (SceneManager.sceneCountInBuildSettings == activeSceneBuildIndex + 1) SceneManager.LoadScene(0);
                 else SceneManager.LoadScene(activeSceneBuildIndex + 1);
                 break;
-            case SceneLoadOptions.Main:
-                SceneManager.LoadScene(0);
+            case SceneLoadOptions.LoadDeactive:
+                sceneLoadPanel.SetActive(false);
                 break;
         }
     }
 
-    public void CompleteLevel()
+    IEnumerator FadeCoroutine(MaskableGraphic go, float startValue, float targetValue, float duration, Action callback)
     {
-        PanelOpener(winPanel);
-    }
-
-    IEnumerator GameOverCoroutine(float duration)
-    {
-        float elapsed = 0f;
-
-        gameOverPanel.SetActive(true);
-
-        Image gameOverImage = gameOverPanel.GetComponent<Image>();
-        Color startedColor = gameOverImage.color.WithAlpha(1);
-        TextMeshProUGUI gameOverText = gameOverPanel.GetComponentInChildren<TextMeshProUGUI>();
-
+        float elapsed = 0;
         while (elapsed <= duration)
         {
-            gameOverImage.color = Color.black.WithAlpha(Mathf.Clamp01(elapsed / duration));
-            gameOverText.color = Color.white.WithAlpha(elapsed / duration);
+            float clamp = Mathf.LerpUnclamped(startValue, targetValue, elapsed / duration);
+            go.color = go.color.WithAlpha(clamp);
             elapsed += Time.deltaTime;
             yield return null;
+
         }
-        gameOverImage.color = startedColor;
-        gameOverText.color = Color.white;
-        yield return new WaitForSeconds(duration);
-        SceneLaoder(1);
+        go.color = go.color.WithAlpha(targetValue);
+        callback();
+    }
+
+    IEnumerator FadeAndLoadSceneCoroutine(float duration, float startAlpha, float endAlpha, int sceneIndex)
+    {
+        CoroutineTracker ct = new CoroutineTracker();
+
+        sceneLoadPanel.SetActive(true);
+        int imageIndex = ct.Register();
+        StartCoroutine(FadeCoroutine(sceneLoadPanel.GetComponent<Image>(), startAlpha, endAlpha, duration, () => ct.Complete(imageIndex)));
+
+        int textIndex = ct.Register();
+        StartCoroutine(FadeCoroutine(sceneLoadPanel.GetComponentInChildren<TextMeshProUGUI>(), startAlpha, endAlpha, duration, () => ct.Complete(textIndex)));
+
+        yield return new WaitUntil(() => ct.AllCompleted());
+
+        SceneLaoder(sceneIndex);
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
@@ -103,7 +126,8 @@ public class LevelManager : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case Tag.Player:
-                StartCoroutine(GameOverCoroutine(1f));
+                SetSceneLoadPanelTitle("Game Over");
+                StartCoroutine(FadeAndLoadSceneCoroutine(1.5f, 0f, 1f, 1));
                 break;
             case Tag.Goblin:
                 collision.gameObject.SetActive(false);

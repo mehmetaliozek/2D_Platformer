@@ -2468,6 +2468,10 @@ PrefabInstance:
       propertyPath: gameOverPanel
       value: 
       objectReference: {fileID: 280125313}
+    - target: {fileID: 281360187973578069, guid: da14f8e357810aa4b88ae2f30a502117, type: 3}
+      propertyPath: sceneLoadPanel
+      value: 
+      objectReference: {fileID: 280125313}
     - target: {fileID: 2468570181959369177, guid: da14f8e357810aa4b88ae2f30a502117, type: 3}
       propertyPath: m_Name
       value: Level Manager
@@ -2840,7 +2844,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4334925696376138879, guid: 94f2849be95d0be468bfdf46835830ac, type: 3}
       propertyPath: m_Name
-      value: Game Over
+      value: Scene Load Panel
       objectReference: {fileID: 0}
     - target: {fileID: 8221873938718626655, guid: 94f2849be95d0be468bfdf46835830ac, type: 3}
       propertyPath: m_Pivot.x

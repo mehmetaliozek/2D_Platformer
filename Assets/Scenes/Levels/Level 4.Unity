@@ -5736,7 +5736,7 @@ Tilemap:
       - {fileID: 1367698265, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: -104518725, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: -1857923872, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 78, y: -50, z: 0}
@@ -5856,7 +5856,7 @@ Tilemap:
       - {fileID: 263942157, guid: 07fef862518a5c1498ae08040440ff63, type: 3}
       - {fileID: 1630541562, guid: 07fef862518a5c1498ae08040440ff63, type: 3}
       - {fileID: -151697058, guid: 07fef862518a5c1498ae08040440ff63, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 74, y: -48, z: 0}
@@ -6306,7 +6306,7 @@ Tilemap:
       - {fileID: 2013077612, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: -597272321, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: 1387919083, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 75, y: -42, z: 0}
@@ -6436,7 +6436,7 @@ Tilemap:
       - {fileID: 788701301, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: 917589465, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: 49121462, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 37, y: -40, z: 0}
@@ -7166,7 +7166,7 @@ Tilemap:
       - {fileID: 788701301, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: 917589465, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: 49121462, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 78, y: -30, z: 0}
@@ -7486,7 +7486,7 @@ Tilemap:
       - {fileID: 1410919920, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: -1597165717, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: -1991211260, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 50, y: -25, z: 0}
@@ -7756,7 +7756,7 @@ Tilemap:
       - {fileID: 1993599276, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: 654537857, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
       - {fileID: 942370285, guid: 3bf44818b6197c349a6407ec182c58e3, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 50, y: -21, z: 0}
@@ -8506,7 +8506,7 @@ Tilemap:
       - {fileID: 1344843453, guid: 07fef862518a5c1498ae08040440ff63, type: 3}
       - {fileID: 819001858, guid: 07fef862518a5c1498ae08040440ff63, type: 3}
       - {fileID: -1157914789, guid: 07fef862518a5c1498ae08040440ff63, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 22, y: 0, z: 0}
@@ -8556,7 +8556,7 @@ Tilemap:
       - {fileID: 1344843453, guid: 07fef862518a5c1498ae08040440ff63, type: 3}
       - {fileID: 819001858, guid: 07fef862518a5c1498ae08040440ff63, type: 3}
       - {fileID: -1157914789, guid: 07fef862518a5c1498ae08040440ff63, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -3, y: 4, z: 0}
@@ -9514,7 +9514,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4334925696376138879, guid: 94f2849be95d0be468bfdf46835830ac, type: 3}
       propertyPath: m_Name
-      value: Game Over
+      value: Scene Load Panel
       objectReference: {fileID: 0}
     - target: {fileID: 8221873938718626655, guid: 94f2849be95d0be468bfdf46835830ac, type: 3}
       propertyPath: m_Pivot.x
@@ -9981,6 +9981,14 @@ PrefabInstance:
     - target: {fileID: 5022228457148605594, guid: 4ec08fc0920c1ff4d9b9d4c2303a6dff, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7875508477139105094, guid: 4ec08fc0920c1ff4d9b9d4c2303a6dff, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1301426089}
+    - target: {fileID: 7875508477139105094, guid: 4ec08fc0920c1ff4d9b9d4c2303a6dff, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SceneLaoder
       objectReference: {fileID: 0}
     - target: {fileID: 8687499425198751127, guid: 4ec08fc0920c1ff4d9b9d4c2303a6dff, type: 3}
       propertyPath: m_Pivot.x
@@ -11975,6 +11983,10 @@ PrefabInstance:
       objectReference: {fileID: 916712108}
     - target: {fileID: 281360187973578069, guid: da14f8e357810aa4b88ae2f30a502117, type: 3}
       propertyPath: gameOverPanel
+      value: 
+      objectReference: {fileID: 769270382}
+    - target: {fileID: 281360187973578069, guid: da14f8e357810aa4b88ae2f30a502117, type: 3}
+      propertyPath: sceneLoadPanel
       value: 
       objectReference: {fileID: 769270382}
     - target: {fileID: 2468570181959369177, guid: da14f8e357810aa4b88ae2f30a502117, type: 3}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private List<Character> enemies = new();
+    private List<Enemy> enemies = new();
 
     [SerializeField]
     private GameObject key;
@@ -13,10 +13,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        enemies = GameObject.FindGameObjectWithTag(Tag.Enemies).GetComponentsInChildren<Character>().ToList();
+        enemies = GameObject.FindGameObjectWithTag(Tag.Enemies.ToString()).GetComponentsInChildren<Enemy>().ToList();
     }
 
-    public void RemoveEnemy(Character enemy, Vector3 keyPosition)
+    public void RemoveEnemy(Enemy enemy, Vector3 keyPosition)
     {
         enemies.Remove(enemy);
         if (enemies.Count == 0 && !isKeyInstantiate)

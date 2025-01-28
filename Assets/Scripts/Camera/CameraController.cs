@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        target = GameObject.FindGameObjectWithTag(Tag.Player).transform;
+        target = GameObject.FindGameObjectWithTag(Tag.Player.ToString()).transform;
         initialPosition = transform.position;
     }
 

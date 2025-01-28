@@ -104,7 +104,7 @@ Animator:
   m_GameObject: {fileID: 113298048659290211}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8e749f9aeb64bd74aa93bd55f5a46aae, type: 2}
+  m_Controller: {fileID: 22100000, guid: 2749432dc65d8f84890edb81b813997d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -331,10 +331,10 @@ MonoBehaviour:
     m_Bits: 128
   groundCheckRadius: 0.2
   dive:
-    character: {fileID: 8333338401480479795}
     isDiving: 0
   dust: {fileID: 8026062428884036953}
   coolDownBar: {fileID: 0}
+  infoPanelGate: {fileID: 0}
 --- !u!1 &1787507147385214930
 GameObject:
   m_ObjectHideFlags: 0

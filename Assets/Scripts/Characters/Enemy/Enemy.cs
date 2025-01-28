@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class Enemy : Character
+public abstract class Enemy : Character
 {
+    public EnemyType type;
     public float range;
     private Vector2 positionA;
     private Vector2 positionB;
     private Vector2 targetPosition;
+    private Vector3 currentAbsScale;
     private bool isRemoved = false;
 
     public LayerMask playerLayer;
@@ -17,25 +19,26 @@ public class Enemy : Character
         positionA = transform.position;
         positionB = transform.position + (transform.localScale * range);
         targetPosition = positionB;
+        currentAbsScale = new Vector3(
+            Mathf.Abs(transform.localScale.x),
+            Mathf.Abs(transform.localScale.y),
+            Mathf.Abs(transform.localScale.z)
+        );
+
+        rb = GetComponent<Rigidbody2D>();
+        tr = GetComponent<TrailRenderer>();
+        healtBar.SetMaxValue(stat.health);
+
+        EnemyStart();
     }
 
     public void Update()
     {
-        if (isDeath)
-        {
-            if (!isRemoved)
-            {
-                RemoveThis();
-                isRemoved = true;
-            }
-            return;
-        }
-        if (dash.isDashing) return;
-        if (knockback.isKnockback) return;
-
+        if (UpdateBreaker())return;
         Move(0);
         Turn(1);
         Jump(0);
+        EnemyUpdate();
     }
 
     protected override void Move(float moveInput)
@@ -52,14 +55,15 @@ public class Enemy : Character
             targetPosition = targetPosition == positionA ? positionB : positionA;
         }
 
-        animator.SetFloat(AnimationParametre.Velocity, 1);
+        animator.SetFloat(AnimationParametre.Velocity.ToString(), 1);
     }
 
     protected override void Turn(float moveInput)
     {
         if (moveInput != 0)
         {
-            transform.localScale = new Vector3(transform.position.x < targetPosition.x ? 1 : -1, 1, 1);
+            Vector3 directionVector = new Vector3(transform.position.x < targetPosition.x ? 1 : -1, 1, 1);
+            transform.localScale = Vector3.Scale(currentAbsScale, directionVector);
         }
     }
 
@@ -69,7 +73,7 @@ public class Enemy : Character
         RaycastHit2D hit = Physics2D.Linecast(transform.position, visionRange, groundLayer);
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
-        if (hit.collider != null && hit.collider.gameObject.CompareTag(Tag.Ground) && isGrounded)
+        if (hit.collider != null && hit.collider.gameObject.CompareTag(Tag.Ground.ToString()) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, stat.jumpForce);
         }
@@ -79,16 +83,25 @@ public class Enemy : Character
 
     public void RemoveThis()
     {
-        GameObject.FindGameObjectWithTag(Tag.GameManager).GetComponent<GameManager>().RemoveEnemy(this, positionA);
+        GameObject.FindGameObjectWithTag(Tag.GameManager.ToString()).GetComponent<GameManager>().RemoveEnemy(this, positionA);
     }
 
-    protected override void Attack()
+    public bool UpdateBreaker()
     {
-
+        if (isDeath)
+        {
+            if (!isRemoved)
+            {
+                RemoveThis();
+                isRemoved = true;
+            }
+            return true;
+        }
+        if (dash.isDashing) return true;
+        if (knockback.isKnockback) return true;
+        return false;
     }
 
-    protected override void Dash()
-    {
-
-    }
+    protected abstract void EnemyStart();
+    protected abstract void EnemyUpdate();
 }

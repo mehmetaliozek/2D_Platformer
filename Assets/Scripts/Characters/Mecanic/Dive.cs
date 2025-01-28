@@ -4,12 +4,11 @@ using UnityEngine;
 [System.Serializable]
 public class Dive
 {
-    public Character character;
-    
+    //public Character character;
     [HideInInspector]
     public bool isDiving;
 
-    public IEnumerator DiveCoroutine(Rigidbody2D rb, TrailRenderer tr, ParticleSystem dust)
+    public IEnumerator DiveCoroutine(Rigidbody2D rb, TrailRenderer tr, ParticleSystem dust,Character character)
     {
         rb.linearVelocity = new Vector2(0, -2f * character.stat.jumpForce);
         tr.emitting = true;

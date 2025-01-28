@@ -27,11 +27,6 @@ public class Bar : MonoBehaviour
         StartCoroutine(SetValueCoroutine(value));
     }
 
-    public bool IsMaxValue()
-    {
-        return slider.maxValue == slider.value;
-    }
-
     IEnumerator SetValueCoroutine(float value)
     {
         float elapsedTime = 0f;

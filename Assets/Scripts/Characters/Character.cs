@@ -59,25 +59,34 @@ public abstract class Character : MonoBehaviour
     protected void Death()
     {
         animator.SetTrigger(AnimationParametre.Death.ToString());
-        GetComponent<CapsuleCollider2D>().size = new Vector2(0.5f, 0.5f);
-        GetComponent<CapsuleCollider2D>().isTrigger = true;
     }
 
-    public void StartDeath()
+
+    public void DeathStart()
     {
         isDeath = true;
     }
 
-    public void EndDeath()
+    public void DeathEnd()
     {
         animator.speed = 0;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (stat.health <= 0 && other.CompareTag(Tag.Ground))
+        if (stat.health <= 0 && collision.gameObject.CompareTag(Tag.Ground.ToString()))
         {
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            CapsuleCollider2D capsuleCollider = gameObject.GetComponent<CapsuleCollider2D>();
+            float colliderThresholdY = transform.position.y - (capsuleCollider.size.y / 4);
+            foreach (ContactPoint2D contact in collision.contacts)
+            {
+                if (contact.point.y < colliderThresholdY)
+                {
+                    rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                    capsuleCollider.isTrigger = true;
+                    break;
+                }
+            }
         }
     }
 }

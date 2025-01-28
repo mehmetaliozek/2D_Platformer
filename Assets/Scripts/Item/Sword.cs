@@ -23,7 +23,7 @@ public class Sword : MonoBehaviour
             {
                 Character character = enemy.GetComponent<Character>();
                 character.Hit(GetComponentInParent<Character>().stat.damage);
-                (character as Goblin).damageEffect.Play();
+                (character as Enemy).damageEffect.Play();
                 if (character.knockback.isKnockback) continue;
                 Vector2 direction = -(transform.position - character.transform.position).normalized;
                 StartCoroutine(character.knockback.KnockbackCoroutine(character.GetComponent<Rigidbody2D>(), direction));
@@ -31,7 +31,7 @@ public class Sword : MonoBehaviour
         }
     }
 
-    public void StartAttack() => isAttacking = true;
+    public void AttackStart() => isAttacking = true;
 
-    public void EndAttack() => isAttacking = false;
+    public void AttackEnd() => isAttacking = false;
 }

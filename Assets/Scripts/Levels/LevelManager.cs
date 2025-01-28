@@ -123,16 +123,19 @@ public class LevelManager : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        switch (collision.gameObject.tag)
+        if (Enum.TryParse(collision.gameObject.tag, true, out Tag tag))
         {
-            case Tag.Player:
-                SetSceneLoadPanelTitle("Game Over");
-                StartCoroutine(FadeAndLoadSceneCoroutine(1.5f, 0f, 1f, 1));
-                break;
-            case Tag.Goblin:
-                collision.gameObject.SetActive(false);
-                collision.gameObject.GetComponent<Goblin>().RemoveThis();
-                break;
+            switch (tag)
+            {
+                case Tag.Player:
+                    SetSceneLoadPanelTitle("Game Over");
+                    StartCoroutine(FadeAndLoadSceneCoroutine(1.5f, 0f, 1f, 1));
+                    break;
+                case Tag.Enemy:
+                    collision.gameObject.SetActive(false);
+                    collision.gameObject.GetComponent<Enemy>().RemoveThis();
+                    break;
+            }
         }
     }
 }

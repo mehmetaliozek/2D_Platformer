@@ -1,4 +1,4 @@
-enum SceneLoadOptions
+public enum SceneLoadOptions
 {
     LoadDeactive = -1,
     Main = 0,

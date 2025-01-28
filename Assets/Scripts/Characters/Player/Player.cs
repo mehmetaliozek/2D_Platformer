@@ -24,6 +24,9 @@ public class Player : Character
         animator.SetTrigger(AnimationParametre.Spawn.ToString());
         sword = GetComponentInChildren<Sword>();
 
+        //healtBar = GameObject.FindGameObjectWithTag(Tag.HealthBar.ToString()).GetComponent<Bar>();
+        //coolDownBar = GameObject.FindGameObjectWithTag(Tag.CooldownBar.ToString()).GetComponent<Bar>();
+
         healtBar.SetMaxValue(stat.health);
         coolDownBar.SetMaxValue(1);
         coolDownBar.animationDuration = dash.dashingCooldown * 2;
@@ -61,14 +64,14 @@ public class Player : Character
     {
         if (Input.GetKeyDown(KeyCode.S) && !isGrounded)
         {
-            StartCoroutine(dive.DiveCoroutine(rb, tr, dust));
+            StartCoroutine(dive.DiveCoroutine(rb, tr, dust, this));
         }
     }
 
     protected override void Move(float moveInput)
     {
         rb.linearVelocity = new Vector2(moveInput * stat.moveSpeed, rb.linearVelocity.y);
-        animator.SetFloat(AnimationParametre.Velocity, Mathf.Abs(moveInput));
+        animator.SetFloat(AnimationParametre.Velocity.ToString(), Mathf.Abs(moveInput));
     }
 
     protected override void Turn(float moveInput)
@@ -139,11 +142,11 @@ public class Player : Character
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.TryGetComponent(out Character character))
+        if (other.gameObject.TryGetComponent(out Enemy enemy))
         {
-            if (character.CompareTag(Tag.Goblin) && character.dash.isDashing)
+            if (enemy.CompareTag(Tag.Enemy.ToString()) && enemy.dash.isDashing)
             {
-                Hit(character.stat.damage);
+                Hit(enemy.stat.damage);
                 Vector2 direction = (transform.position - other.transform.position).normalized;
                 StartCoroutine(knockback.KnockbackCoroutine(rb, direction));
             }
@@ -152,7 +155,7 @@ public class Player : Character
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag(Tag.Gate) && isGetKey)
+        if (other.gameObject.CompareTag(Tag.Gate.ToString()) && isGetKey)
         {
             isInGate = true;
             Camera.main.GetComponent<CameraController>().LevelEnding();
@@ -176,7 +179,7 @@ public class Player : Character
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag(Tag.Gate) && !isGetKey)
+        if (other.gameObject.CompareTag(Tag.Gate.ToString()) && !isGetKey)
         {
             //TODO anahtar isteme gitsin
         }

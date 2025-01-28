@@ -4,14 +4,16 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Goblin
-  - Sword
   - Ground
   - Gate
   - Main Menu
   - Enemies
   - KeyImage
   - GameManager
+  - Sword
+  - HealthBar
+  - CooldownBar
+  - Enemy
   layers:
   - Default
   - TransparentFX

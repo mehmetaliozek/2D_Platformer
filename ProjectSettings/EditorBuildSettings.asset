@@ -29,5 +29,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/Level Z.Unity
     guid: 80c7d579262ebcc4b844db7bcc9ea8b8
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level Berkay.Unity
+    guid: 89d1f10512d20d844b271e8e6748803d
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

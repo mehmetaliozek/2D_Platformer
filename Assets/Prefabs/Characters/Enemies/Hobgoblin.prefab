@@ -65,6 +65,14 @@ PrefabInstance:
       value: 0.7411765
       objectReference: {fileID: 0}
     - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -135,32 +143,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stat:
-    health: 100
+    health: 75
     moveSpeed: 3
     jumpForce: 20
-    damage: 20
-  dash:
-    canDash: 1
-    isDashing: 0
-    dashingPower: 9
-    dashingTime: 0.3
-    dashingCooldown: 1
+    damage: 15
+  roll:
+    canRoll: 1
+    isRolling: 0
+    rollingPower: 9
+    rollingTime: 0.3
+    rollingCooldown: 1
   knockback:
     isKnockback: 0
     knockbackingPower: 10
-    knockbackingTime: 0.05
+    knockbackingTime: 0.2
+    knockbackingResistance: 0
   healtBar: {fileID: 8780053860101663919}
   animator: {fileID: 1242682875007768848}
-  groundCheck: {fileID: 8018299908062928273}
+  ground: {fileID: 8018299908062928273}
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  groundCheckRadius: 0.2
+  groundCheckRadius: 0.1
   type: 1
   range: 5
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
+  visionRange: 2
   damageEffect: {fileID: 4367633124751065978}
 --- !u!198 &4367633124751065978 stripped
 ParticleSystem:

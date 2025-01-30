@@ -65,6 +65,14 @@ PrefabInstance:
       value: 0.5803922
       objectReference: {fileID: 0}
     - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -104,6 +112,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7653276457199606432, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_Size.y
+      value: 0.95
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -135,32 +147,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stat:
-    health: 0
-    moveSpeed: 0
-    jumpForce: 0
-    damage: 0
-  dash:
-    canDash: 1
-    isDashing: 0
-    dashingPower: 6
-    dashingTime: 0.4
-    dashingCooldown: 1
+    health: 125
+    moveSpeed: 2.25
+    jumpForce: 20
+    damage: 25
+  roll:
+    canRoll: 1
+    isRolling: 0
+    rollingPower: 6
+    rollingTime: 0.4
+    rollingCooldown: 1
   knockback:
     isKnockback: 0
     knockbackingPower: 10
     knockbackingTime: 0.2
+    knockbackingResistance: 0
   healtBar: {fileID: 5221992380285997014}
   animator: {fileID: 2350843190759324265}
-  groundCheck: {fileID: 6838578973236346600}
+  ground: {fileID: 6838578973236346600}
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  groundCheckRadius: 0.2
+  groundCheckRadius: 0.1
   type: 5
   range: 0
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
+  visionRange: 2
   damageEffect: {fileID: 954139969307418627}
 --- !u!95 &2350843190759324265 stripped
 Animator:

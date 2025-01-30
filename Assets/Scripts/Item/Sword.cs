@@ -26,7 +26,8 @@ public class Sword : MonoBehaviour
                 (character as Enemy).damageEffect.Play();
                 if (character.knockback.isKnockback) continue;
                 Vector2 direction = -(transform.position - character.transform.position).normalized;
-                StartCoroutine(character.knockback.KnockbackCoroutine(character.GetComponent<Rigidbody2D>(), direction));
+                Knockback kb = transform.parent.GetComponent<Player>().knockback;
+                StartCoroutine(character.knockback.KnockbackCoroutine(character.GetComponent<Rigidbody2D>(), direction, kb));
             }
         }
     }

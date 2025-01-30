@@ -24,6 +24,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1031304523151113505, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1639834043844929450, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_Name
       value: Goblin
@@ -51,6 +55,14 @@ PrefabInstance:
     - target: {fileID: 5174575819225505801, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.r
       value: 0.54509807
+      objectReference: {fileID: 0}
+    - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -91,6 +103,18 @@ PrefabInstance:
     - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6920952037075911479, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6920952037075911479, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7653276457199606432, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_Size.y
+      value: 0.95
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -143,27 +167,30 @@ MonoBehaviour:
     moveSpeed: 2.5
     jumpForce: 15
     damage: 10
-  dash:
-    canDash: 1
-    isDashing: 0
-    dashingPower: 6
-    dashingTime: 0.4
-    dashingCooldown: 1
+  roll:
+    canRoll: 1
+    isRolling: 0
+    rollingPower: 6
+    rollingTime: 0.4
+    rollingCooldown: 1
   knockback:
     isKnockback: 0
     knockbackingPower: 10
-    knockbackingTime: 0.05
+    knockbackingTime: 0.2
+    knockbackingResistance: 0
   healtBar: {fileID: 4174450262598513596}
   animator: {fileID: 5839270340078650883}
-  groundCheck: {fileID: 3418545866686005890}
+  ground: {fileID: 3418545866686005890}
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
-  groundCheckRadius: 0.2
+  groundCheckRadius: 0.1
+  type: 0
   range: 5
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
+  visionRange: 2
   damageEffect: {fileID: 8983369804254813289}
 --- !u!198 &8983369804254813289 stripped
 ParticleSystem:

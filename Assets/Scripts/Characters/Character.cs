@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     public Stat stat;
-    public Dash dash;
+    public Roll roll;
     public Knockback knockback;
 
     [SerializeField]
@@ -16,9 +16,9 @@ public abstract class Character : MonoBehaviour
     protected TrailRenderer tr;
 
     protected bool isGrounded;
-    public Transform groundCheck;
+    public Transform ground;
     public LayerMask groundLayer;
-    public float groundCheckRadius = 0.2f;
+    public float groundCheckRadius = 0.1f;
     protected bool isDeath = false;
 
     protected abstract void Move(float moveInput);
@@ -27,9 +27,11 @@ public abstract class Character : MonoBehaviour
 
     protected abstract void Jump(float moveInput);
 
-    protected abstract void Dash();
+    protected abstract void Roll();
 
     protected abstract void Attack();
+
+    protected abstract bool CheckCharacterState();
 
     public void Hit(float damage)
     {
@@ -61,7 +63,6 @@ public abstract class Character : MonoBehaviour
         animator.SetTrigger(AnimationParametre.Death.ToString());
     }
 
-
     public void DeathStart()
     {
         isDeath = true;
@@ -72,15 +73,27 @@ public abstract class Character : MonoBehaviour
         animator.speed = 0;
     }
 
+    public void SetRollState(RollState value)
+    {
+        animator.SetInteger(AnimationParametre.RollState.ToString(), (int)value);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (stat.health <= 0 && collision.gameObject.CompareTag(Tag.Ground.ToString()))
         {
             CapsuleCollider2D capsuleCollider = gameObject.GetComponent<CapsuleCollider2D>();
-            float colliderThresholdY = transform.position.y - (capsuleCollider.size.y / 4);
+            Vector3 position = transform.position;
+            Vector2 colliderSize = capsuleCollider.size;
+
+            float minX = position.x - colliderSize.x;
+            float maxX = position.x + colliderSize.x;
+
+            float minY = position.y - (colliderSize.y / 2);
+
             foreach (ContactPoint2D contact in collision.contacts)
             {
-                if (contact.point.y < colliderThresholdY)
+                if (contact.point.x >= minX && contact.point.x <= maxX && contact.point.y < minY)
                 {
                     rb.constraints = RigidbodyConstraints2D.FreezeAll;
                     capsuleCollider.isTrigger = true;

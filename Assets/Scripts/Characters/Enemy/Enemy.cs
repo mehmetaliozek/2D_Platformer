@@ -11,13 +11,13 @@ public abstract class Enemy : Character
     private bool isRemoved = false;
 
     public LayerMask playerLayer;
-
+    public float visionRange = 2f;
     public ParticleSystem damageEffect;
 
     public void Start()
     {
         positionA = transform.position;
-        positionB = transform.position + (transform.localScale * range);
+        positionB = transform.position + new Vector3(range * Mathf.Sign(transform.localScale.x), 0, 0);
         targetPosition = positionB;
         currentAbsScale = new Vector3(
             Mathf.Abs(transform.localScale.x),
@@ -34,7 +34,7 @@ public abstract class Enemy : Character
 
     public void Update()
     {
-        if (UpdateBreaker())return;
+        if (CheckCharacterState()) return;
         Move(0);
         Turn(1);
         Jump(0);
@@ -43,37 +43,39 @@ public abstract class Enemy : Character
 
     protected override void Move(float moveInput)
     {
-        Vector2 newPos = new Vector2(
+        transform.position = new Vector2(
             Mathf.MoveTowards(transform.position.x, targetPosition.x, stat.moveSpeed * Time.deltaTime),
             transform.position.y
         );
 
-        transform.position = newPos;
-
-        if (Mathf.Abs(transform.position.x - targetPosition.x) < 0.1f)
+        if (Mathf.Approximately(transform.position.x, targetPosition.x))
         {
-            targetPosition = targetPosition == positionA ? positionB : positionA;
+            targetPosition = (targetPosition == positionA) ? positionB : positionA;
         }
+
+        TargetRecalculation();
 
         animator.SetFloat(AnimationParametre.Velocity.ToString(), 1);
     }
 
     protected override void Turn(float moveInput)
     {
-        if (moveInput != 0)
-        {
-            Vector3 directionVector = new Vector3(transform.position.x < targetPosition.x ? 1 : -1, 1, 1);
-            transform.localScale = Vector3.Scale(currentAbsScale, directionVector);
-        }
+        if (moveInput == 0) return;
+
+        float direction = (transform.position.x < targetPosition.x) ? 1f : -1f;
+        transform.localScale = new Vector3(currentAbsScale.x * direction, currentAbsScale.y, currentAbsScale.z);
     }
 
     protected override void Jump(float moveInput)
     {
-        Vector2 visionRange = transform.position + (transform.localScale.x == 1 ? Vector3.right : Vector3.left) / 1.5f;
-        RaycastHit2D hit = Physics2D.Linecast(transform.position, visionRange, groundLayer);
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        Vector3 direction = GetDirection();
+        Vector3 basePosition = transform.position + Vector3.down * (currentAbsScale.y / 3);
+        Vector3 endPosition = basePosition + direction * (currentAbsScale.x / 1.5f);
 
-        if (hit.collider != null && hit.collider.gameObject.CompareTag(Tag.Ground.ToString()) && isGrounded)
+        isGrounded = Physics2D.OverlapCircle(ground.position, groundCheckRadius, groundLayer);
+        RaycastHit2D hit = Physics2D.Linecast(basePosition, endPosition, groundLayer);
+
+        if (hit.collider != null && hit.collider.CompareTag(Tag.Ground.ToString()) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, stat.jumpForce);
         }
@@ -81,12 +83,7 @@ public abstract class Enemy : Character
         animator.SetBool(AnimationParametre.IsJumpRun.ToString(), !isGrounded);
     }
 
-    public void RemoveThis()
-    {
-        GameObject.FindGameObjectWithTag(Tag.GameManager.ToString()).GetComponent<GameManager>().RemoveEnemy(this, positionA);
-    }
-
-    public bool UpdateBreaker()
+    protected override bool CheckCharacterState()
     {
         if (isDeath)
         {
@@ -97,9 +94,43 @@ public abstract class Enemy : Character
             }
             return true;
         }
-        if (dash.isDashing) return true;
+        if (roll.isRolling) return true;
         if (knockback.isKnockback) return true;
         return false;
+    }
+
+    private void TargetRecalculation()
+    {
+        Vector3 direction = GetDirection();
+        Vector2 checkPosition = ground.position + Vector3.down + direction / 3;
+
+        if (!Physics2D.OverlapCircle(checkPosition, groundCheckRadius, groundLayer) && isGrounded)
+        {
+            targetPosition = transform.position - direction * range;
+        }
+    }
+
+    protected bool IsPlayerInSight()
+    {
+        Vector3 direction = GetDirection();
+        float height = transform.localScale.y * 0.9f;
+
+        return Physics2D.OverlapBox(
+            transform.position + direction * (visionRange * 0.5f),
+            new Vector2(visionRange, height),
+            0,
+            playerLayer
+        );
+    }
+
+    public void RemoveThis()
+    {
+        GameManager.Instance.RemoveEnemy(this, positionA);
+    }
+
+    private Vector3 GetDirection()
+    {
+        return transform.localScale.x > 0 ? Vector3.right : Vector3.left;
     }
 
     protected abstract void EnemyStart();

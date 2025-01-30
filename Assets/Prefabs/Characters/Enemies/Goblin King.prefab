@@ -49,6 +49,14 @@ PrefabInstance:
       value: 0.54509807
       objectReference: {fileID: 0}
     - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6673059068734386483, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -126,28 +134,30 @@ MonoBehaviour:
     moveSpeed: 0
     jumpForce: 0
     damage: 0
-  dash:
-    canDash: 1
-    isDashing: 0
-    dashingPower: 6
-    dashingTime: 0.4
-    dashingCooldown: 1
+  roll:
+    canRoll: 1
+    isRolling: 0
+    rollingPower: 6
+    rollingTime: 0.4
+    rollingCooldown: 1
   knockback:
     isKnockback: 0
     knockbackingPower: 10
     knockbackingTime: 0.2
+    knockbackingResistance: 0
   healtBar: {fileID: 6669977099232373556}
   animator: {fileID: 3780602421170462347}
-  groundCheck: {fileID: 5336547761199716874}
+  ground: {fileID: 5336547761199716874}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 384
-  groundCheckRadius: 0.2
+    m_Bits: 128
+  groundCheckRadius: 0.1
   type: 2
   range: 5
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
+  visionRange: 2
   damageEffect: {fileID: 1861521070776911073}
 --- !u!198 &1861521070776911073 stripped
 ParticleSystem:

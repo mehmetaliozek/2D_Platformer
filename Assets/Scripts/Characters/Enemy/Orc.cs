@@ -15,8 +15,12 @@ public class Orc : Enemy
 
     }
 
-    protected override void Dash()
+    protected override void Roll()
     {
 
     }
 }
+
+// Balta ver
+// koþtu koþtu durdu balta savurdu
+// bam bam bam vursun

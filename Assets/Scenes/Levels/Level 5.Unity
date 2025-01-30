@@ -293,7 +293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalScale.x
-      value: -1
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -301,7 +301,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -21.61597
+      value: -21.338
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -370,12 +370,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 55.526093
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -48.47
+      value: -48.19203
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -627,12 +631,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 42.59562
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -44.44
+      value: -44.162025
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -775,12 +783,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -11.535767
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -29.565489
+      value: -29.287518
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -55556,7 +55568,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalScale.x
-      value: -1
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -55564,7 +55576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.5456867
+      value: -4.2677155
       objectReference: {fileID: 0}
     - target: {fileID: 7443661634135208214, guid: f5439342db7bf644485c8e6c8d02173b, type: 3}
       propertyPath: m_LocalPosition.z

@@ -24,38 +24,19 @@ public class Player : Character
         animator.SetTrigger(AnimationParametre.Spawn.ToString());
         sword = GetComponentInChildren<Sword>();
 
-        //healtBar = GameObject.FindGameObjectWithTag(Tag.HealthBar.ToString()).GetComponent<Bar>();
-        //coolDownBar = GameObject.FindGameObjectWithTag(Tag.CooldownBar.ToString()).GetComponent<Bar>();
-
         healtBar.SetMaxValue(stat.health);
         coolDownBar.SetMaxValue(1);
-        coolDownBar.animationDuration = dash.dashingCooldown * 2;
+        coolDownBar.animationDuration = roll.rollingCooldown * 2;
     }
 
     private void Update()
     {
-        if (isInGate)
-        {
-            Vector3 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
-            Vector3 objScale = transform.localScale / 2;
-
-            if (viewportPos.y - objScale.y > 1)
-            {
-                LevelManager.Instance.CompleteLevel();
-                isInGate = false;
-            }
-            return;
-        }
-        if (isDeath) return;
-        if (dash.isDashing) return;
-        if (knockback.isKnockback) return;
-        if (dive.isDiving) return;
-
+        if (CheckCharacterState()) return;
         float moveInput = Input.GetAxis("Horizontal");
         Move(moveInput);
         Turn(moveInput);
         Jump(moveInput);
-        Dash();
+        Roll();
         Attack();
         Dive();
     }
@@ -76,21 +57,19 @@ public class Player : Character
 
     protected override void Turn(float moveInput)
     {
-        float lastLocalScale = transform.localScale.x;
-        if (moveInput != 0)
-        {
-            transform.localScale = new Vector3(moveInput > 0 ? 1 : -1, 1, 1);
-        }
+        if (moveInput == 0) return;
 
-        if (lastLocalScale != transform.localScale.x && isGrounded)
+        float newScaleX = Mathf.Sign(moveInput);
+        if (transform.localScale.x != newScaleX)
         {
-            dust.Play();
+            transform.localScale = new Vector3(newScaleX, 1, 1);
+            if (isGrounded) dust.Play();
         }
     }
 
     protected override void Jump(float moveInput)
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(ground.position, groundCheckRadius, groundLayer);
 
         if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && isGrounded)
         {
@@ -102,31 +81,52 @@ public class Player : Character
         animator.SetBool(AnimationParametre.IsJumpRun.ToString(), !isGrounded && moveInput != 0);
     }
 
-    protected override void Dash()
+    protected override void Roll()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && dash.canDash)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && roll.canRoll)
         {
             coolDownBar.SetValue(0);
-            animator.SetTrigger(AnimationParametre.Dash.ToString());
+            SetRollState(RollState.Start);
             if (!isGrounded)
             {
                 animator.SetBool(AnimationParametre.IsJumpIdle.ToString(), false);
                 animator.SetBool(AnimationParametre.IsJumpRun.ToString(), false);
             }
-            StartCoroutine(dash.DashCoroutine(rb, transform, tr));
+            StartCoroutine(roll.RollCoroutine(rb, transform, tr, callback: () => SetRollState(RollState.End)));
             StartCoroutine(SetCoolDownValueCoroutine());
         }
     }
 
     private IEnumerator SetCoolDownValueCoroutine()
     {
-        yield return new WaitForSeconds(dash.dashingCooldown + dash.dashingTime);
+        yield return new WaitForSeconds(roll.rollingCooldown + roll.rollingTime);
         coolDownBar.SetValue(1);
     }
 
     protected override void Attack()
     {
         sword.Attack();
+    }
+
+    protected override bool CheckCharacterState()
+    {
+        if (isInGate)
+        {
+            Vector3 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
+            Vector3 objScale = transform.localScale / 2;
+
+            if (viewportPos.y - objScale.y > 1)
+            {
+                LevelManager.Instance.CompleteLevel();
+                isInGate = false;
+            }
+            return true;
+        }
+        if (isDeath) return true;
+        if (roll.isRolling) return true;
+        if (knockback.isKnockback) return true;
+        if (dive.isDiving) return true;
+        return false;
     }
 
     public new void Hit(float damage)
@@ -144,11 +144,11 @@ public class Player : Character
     {
         if (other.gameObject.TryGetComponent(out Enemy enemy))
         {
-            if (enemy.CompareTag(Tag.Enemy.ToString()) && enemy.dash.isDashing)
+            if (enemy.roll.isRolling)
             {
                 Hit(enemy.stat.damage);
                 Vector2 direction = (transform.position - other.transform.position).normalized;
-                StartCoroutine(knockback.KnockbackCoroutine(rb, direction));
+                StartCoroutine(knockback.KnockbackCoroutine(rb, direction, enemy.knockback));
             }
         }
     }

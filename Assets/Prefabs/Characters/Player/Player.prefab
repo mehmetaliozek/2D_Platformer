@@ -151,7 +151,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.7, y: 0.9}
+  m_Size: {x: 0.7, y: 1}
   m_Direction: 0
 --- !u!50 &5678441785858827235
 Rigidbody2D:
@@ -313,19 +313,20 @@ MonoBehaviour:
     moveSpeed: 7.5
     jumpForce: 20
     damage: 25
-  dash:
-    canDash: 1
-    isDashing: 0
-    dashingPower: 9
-    dashingTime: 0.4
-    dashingCooldown: 0.5
+  roll:
+    canRoll: 1
+    isRolling: 0
+    rollingPower: 9
+    rollingTime: 0.5
+    rollingCooldown: 0.5
   knockback:
     isKnockback: 0
     knockbackingPower: 10
-    knockbackingTime: 0.2
+    knockbackingTime: 0.05
+    knockbackingResistance: 0
   healtBar: {fileID: 0}
   animator: {fileID: 200258947036644350}
-  groundCheck: {fileID: 8475511618061659749}
+  ground: {fileID: 8475511618061659749}
   groundLayer:
     serializedVersion: 2
     m_Bits: 128

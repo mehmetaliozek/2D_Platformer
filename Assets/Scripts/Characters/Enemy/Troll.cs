@@ -15,8 +15,13 @@ public class Troll : Enemy
 
     }
 
-    protected override void Dash()
+    protected override void Roll()
     {
 
     }
 }
+
+// Çekiç ver
+// Oyuncuyu kovalýycak
+// platformdan platforma gidebilcek
+// Çekiçle yere vursun

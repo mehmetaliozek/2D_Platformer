@@ -3,7 +3,7 @@ public enum AnimationParametre
     Velocity,
     IsJumpIdle,
     IsJumpRun,
-    Dash,
+    RollState,
     Spawn,
     Death,
     Attack, 

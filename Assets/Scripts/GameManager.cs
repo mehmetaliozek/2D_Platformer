@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     private List<Enemy> enemies = new();
 
     [SerializeField]
     private GameObject key;
 
     private bool isKeyInstantiate;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {

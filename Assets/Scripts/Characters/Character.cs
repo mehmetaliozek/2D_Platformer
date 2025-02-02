@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -21,6 +22,8 @@ public abstract class Character : MonoBehaviour
     public float groundCheckRadius = 0.1f;
     protected bool isDeath = false;
 
+    protected event EventHandler HitEvent;
+
     protected abstract void Move(float moveInput);
 
     protected abstract void Turn(float moveInput);
@@ -40,6 +43,7 @@ public abstract class Character : MonoBehaviour
 
         stat.health -= damage;
         healtBar.SetValue(stat.health);
+        HitEvent?.Invoke(this, EventArgs.Empty);
 
         if (stat.health <= 0)
         {
@@ -73,9 +77,27 @@ public abstract class Character : MonoBehaviour
         animator.speed = 0;
     }
 
+    public void RollStart(float duration = 0f, Action callback = null)
+    {
+        roll.Coroutine = StartCoroutine(roll.RollStartCoroutine(rb, transform, tr, duration, callback));
+    }
+
+    public void RollStop()
+    {
+        StopCoroutine(roll.Coroutine);
+        StartCoroutine(roll.RollStopCoroutine(rb, tr));
+    }
+
     public void SetRollState(RollState value)
     {
         animator.SetInteger(AnimationParametre.RollState.ToString(), (int)value);
+    }
+
+    public void Knockback(Character c)
+    {
+        Hit(c.stat.damage);
+        Vector2 direction = (transform.position - c.transform.position).normalized;
+        StartCoroutine(knockback.KnockbackCoroutine(rb, direction, c.knockback));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

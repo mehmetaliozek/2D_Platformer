@@ -20,6 +20,18 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.b
+      value: 0.65882355
+      objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.g
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.r
+      value: 0.77254903
+      objectReference: {fileID: 0}
     - target: {fileID: 1639834043844929450, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_Name
       value: Goblin King
@@ -36,6 +48,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 5fe0536745db02a46b27c701c6428dc5, type: 2}
+    - target: {fileID: 4163326361649085847, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_Name
+      value: Damage Particle
+      objectReference: {fileID: 0}
     - target: {fileID: 5174575819225505801, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.b
       value: 0.3137255
@@ -145,6 +161,7 @@ MonoBehaviour:
     knockbackingPower: 10
     knockbackingTime: 0.2
     knockbackingResistance: 0
+  damageParticle: {fileID: 1861521070776911073}
   healtBar: {fileID: 6669977099232373556}
   animator: {fileID: 3780602421170462347}
   ground: {fileID: 5336547761199716874}
@@ -158,7 +175,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   visionRange: 2
-  damageEffect: {fileID: 1861521070776911073}
 --- !u!198 &1861521070776911073 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}

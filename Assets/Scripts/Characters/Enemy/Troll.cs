@@ -1,15 +1,5 @@
 public class Troll : Enemy
 {
-    protected override void EnemyStart()
-    {
-
-    }
-
-    protected override void EnemyUpdate()
-    {
-
-    }
-
     protected override void Attack()
     {
 
@@ -18,6 +8,11 @@ public class Troll : Enemy
     protected override void Roll()
     {
 
+    }
+
+    protected override bool CheckCharacterState()
+    {
+        return true;
     }
 }
 

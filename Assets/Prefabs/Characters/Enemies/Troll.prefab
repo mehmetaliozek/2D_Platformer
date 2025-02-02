@@ -36,6 +36,18 @@ PrefabInstance:
       propertyPath: ColorModule.gradient.maxGradient.key0.r
       value: 0.5803922
       objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.b
+      value: 0.80784315
+      objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.g
+      value: 0.7411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.r
+      value: 0.7921569
+      objectReference: {fileID: 0}
     - target: {fileID: 1639834043844929450, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_Name
       value: Troll
@@ -52,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 30c748f1f7564ef40bac9f897b46c1d5, type: 2}
+    - target: {fileID: 4163326361649085847, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_Name
+      value: Damage Particle
+      objectReference: {fileID: 0}
     - target: {fileID: 5174575819225505801, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.b
       value: 0.6156863
@@ -162,6 +178,7 @@ MonoBehaviour:
     knockbackingPower: 10
     knockbackingTime: 0.2
     knockbackingResistance: 0
+  damageParticle: {fileID: 954139969307418627}
   healtBar: {fileID: 5221992380285997014}
   animator: {fileID: 2350843190759324265}
   ground: {fileID: 6838578973236346600}
@@ -175,7 +192,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   visionRange: 2
-  damageEffect: {fileID: 954139969307418627}
 --- !u!95 &2350843190759324265 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3091897559208499509, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}

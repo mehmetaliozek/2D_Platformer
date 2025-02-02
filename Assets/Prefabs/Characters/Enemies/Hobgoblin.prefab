@@ -36,6 +36,18 @@ PrefabInstance:
       propertyPath: ColorModule.gradient.maxGradient.key0.r
       value: 0.7411765
       objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.b
+      value: 0.65882355
+      objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.g
+      value: 0.81960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.r
+      value: 0.87058824
+      objectReference: {fileID: 0}
     - target: {fileID: 1639834043844929450, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_Name
       value: Hobgoblin
@@ -52,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: 62a1a9a9f61d0464cbd0ea633e5474e0, type: 2}
+    - target: {fileID: 4163326361649085847, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_Name
+      value: Damage Particle
+      objectReference: {fileID: 0}
     - target: {fileID: 5174575819225505801, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.b
       value: 0.31764707
@@ -158,6 +174,7 @@ MonoBehaviour:
     knockbackingPower: 10
     knockbackingTime: 0.2
     knockbackingResistance: 0
+  damageParticle: {fileID: 4367633124751065978}
   healtBar: {fileID: 8780053860101663919}
   animator: {fileID: 1242682875007768848}
   ground: {fileID: 8018299908062928273}
@@ -171,7 +188,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   visionRange: 2
-  damageEffect: {fileID: 4367633124751065978}
 --- !u!198 &4367633124751065978 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}

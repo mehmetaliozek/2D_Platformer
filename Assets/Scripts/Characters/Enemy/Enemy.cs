@@ -6,15 +6,15 @@ public abstract class Enemy : Character
     public float range;
     private Vector2 positionA;
     private Vector2 positionB;
-    private Vector2 targetPosition;
+    protected Vector2 targetPosition;
     private Vector3 currentAbsScale;
-    private bool isRemoved = false;
+    protected bool isRemoved = false;
 
     public LayerMask playerLayer;
     public float visionRange = 2f;
-    public ParticleSystem damageEffect;
 
-    public void Start()
+    public ParticleSystem damageParticle;
+    public void EnemyStart()
     {
         positionA = transform.position;
         positionB = transform.position + new Vector3(range * Mathf.Sign(transform.localScale.x), 0, 0);
@@ -29,16 +29,17 @@ public abstract class Enemy : Character
         tr = GetComponent<TrailRenderer>();
         healtBar.SetMaxValue(stat.health);
 
-        EnemyStart();
+        HitEvent += (_, _) =>
+        {
+            damageParticle.Play();
+        };
     }
 
-    public void Update()
+    public void EnemyUpdate()
     {
-        if (CheckCharacterState()) return;
         Move(0);
         Turn(1);
         Jump(0);
-        EnemyUpdate();
     }
 
     protected override void Move(float moveInput)
@@ -75,7 +76,7 @@ public abstract class Enemy : Character
         isGrounded = Physics2D.OverlapCircle(ground.position, groundCheckRadius, groundLayer);
         RaycastHit2D hit = Physics2D.Linecast(basePosition, endPosition, groundLayer);
 
-        if (hit.collider != null && hit.collider.CompareTag(Tag.Ground.ToString()) && isGrounded)
+        if ((hit.collider != null && hit.collider.CompareTag(Tag.Ground.ToString()) && isGrounded) || moveInput == 1)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, stat.jumpForce);
         }
@@ -83,30 +84,11 @@ public abstract class Enemy : Character
         animator.SetBool(AnimationParametre.IsJumpRun.ToString(), !isGrounded);
     }
 
-    protected override bool CheckCharacterState()
-    {
-        if (isDeath)
-        {
-            if (!isRemoved)
-            {
-                RemoveThis();
-                isRemoved = true;
-            }
-            return true;
-        }
-        if (roll.isRolling) return true;
-        if (knockback.isKnockback) return true;
-        return false;
-    }
-
     private void TargetRecalculation()
     {
-        Vector3 direction = GetDirection();
-        Vector2 checkPosition = ground.position + Vector3.down + direction / 3;
-
-        if (!Physics2D.OverlapCircle(checkPosition, groundCheckRadius, groundLayer) && isGrounded)
+        if (IsOnEdge() && isGrounded)
         {
-            targetPosition = transform.position - direction * range;
+            targetPosition = transform.position - GetDirection() * range;
         }
     }
 
@@ -123,6 +105,12 @@ public abstract class Enemy : Character
         );
     }
 
+    protected bool IsOnEdge()
+    {
+        Vector2 checkPosition = ground.position + Vector3.down + GetDirection() / 3;
+        return !Physics2D.OverlapCircle(checkPosition, groundCheckRadius, groundLayer);
+    }
+
     public void RemoveThis()
     {
         GameManager.Instance.RemoveEnemy(this, positionA);
@@ -132,7 +120,4 @@ public abstract class Enemy : Character
     {
         return transform.localScale.x > 0 ? Vector3.right : Vector3.left;
     }
-
-    protected abstract void EnemyStart();
-    protected abstract void EnemyUpdate();
 }

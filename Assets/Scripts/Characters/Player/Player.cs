@@ -4,8 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class Player : Character
 {
+    public static Player Instance { get; private set; }
+
     public Dive dive;
-    private Sword sword;
+    private Weapon weapon;
     private bool isInGate;
     private bool isGetKey;
 
@@ -17,16 +19,26 @@ public class Player : Character
     [SerializeField]
     private GameObject infoPanelGate;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<TrailRenderer>();
         animator.SetTrigger(AnimationParametre.Spawn.ToString());
-        sword = GetComponentInChildren<Sword>();
+        weapon = GetComponentInChildren<Weapon>();
 
         healtBar.SetMaxValue(stat.health);
         coolDownBar.SetMaxValue(1);
         coolDownBar.animationDuration = roll.rollingCooldown * 2;
+
+        HitEvent += (_, _) =>
+        {
+            Camera.main.GetComponent<CameraController>().TriggerShake(0.1f);
+        };
     }
 
     private void Update()
@@ -45,7 +57,7 @@ public class Player : Character
     {
         if (Input.GetKeyDown(KeyCode.S) && !isGrounded)
         {
-            StartCoroutine(dive.DiveCoroutine(rb, tr, dust, this));
+            StartCoroutine(dive.DiveCoroutine(rb, tr, this));
         }
     }
 
@@ -92,7 +104,7 @@ public class Player : Character
                 animator.SetBool(AnimationParametre.IsJumpIdle.ToString(), false);
                 animator.SetBool(AnimationParametre.IsJumpRun.ToString(), false);
             }
-            StartCoroutine(roll.RollCoroutine(rb, transform, tr, callback: () => SetRollState(RollState.End)));
+            RollStart(callback: () => SetRollState(RollState.End));
             StartCoroutine(SetCoolDownValueCoroutine());
         }
     }
@@ -105,7 +117,7 @@ public class Player : Character
 
     protected override void Attack()
     {
-        sword.Attack();
+        if (Input.GetKey(KeyCode.Mouse0)) weapon.Attack();
     }
 
     protected override bool CheckCharacterState()
@@ -129,12 +141,6 @@ public class Player : Character
         return false;
     }
 
-    public new void Hit(float damage)
-    {
-        FindAnyObjectByType<CameraController>().TriggerShake(0.1f);
-        base.Hit(damage);
-    }
-
     public void SetKey()
     {
         isGetKey = true;
@@ -146,9 +152,8 @@ public class Player : Character
         {
             if (enemy.roll.isRolling)
             {
-                Hit(enemy.stat.damage);
-                Vector2 direction = (transform.position - other.transform.position).normalized;
-                StartCoroutine(knockback.KnockbackCoroutine(rb, direction, enemy.knockback));
+                Knockback(enemy);
+                enemy.RollStop();
             }
         }
     }
@@ -157,6 +162,10 @@ public class Player : Character
     {
         if (other.gameObject.CompareTag(Tag.Gate.ToString()) && isGetKey)
         {
+            if (roll.isRolling)
+            {
+                RollStop();
+            }
             isInGate = true;
             Camera.main.GetComponent<CameraController>().LevelEnding();
             rb.linearVelocity = Vector2.zero;

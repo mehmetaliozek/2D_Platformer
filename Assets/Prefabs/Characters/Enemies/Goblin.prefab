@@ -24,6 +24,18 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.b
+      value: 0.65882355
+      objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.g
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.r
+      value: 0.77254903
+      objectReference: {fileID: 0}
     - target: {fileID: 1031304523151113505, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_Icon
       value: 
@@ -44,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 22100000, guid: e2cc9c391cbd4554e8fe88e9abded931, type: 2}
+    - target: {fileID: 4163326361649085847, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
+      propertyPath: m_Name
+      value: Damage Particle
+      objectReference: {fileID: 0}
     - target: {fileID: 5174575819225505801, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.b
       value: 0.3137255
@@ -170,7 +186,7 @@ MonoBehaviour:
   roll:
     canRoll: 1
     isRolling: 0
-    rollingPower: 6
+    rollingPower: 9
     rollingTime: 0.4
     rollingCooldown: 1
   knockback:
@@ -191,7 +207,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   visionRange: 2
-  damageEffect: {fileID: 8983369804254813289}
+  damageParticle: {fileID: 8983369804254813289}
 --- !u!198 &8983369804254813289 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 525432558751433567, guid: d9b469a1c60c0d74d88ba94f82c963ff, type: 3}

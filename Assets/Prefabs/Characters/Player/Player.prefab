@@ -343,6 +343,7 @@ MonoBehaviour:
   dust: {fileID: 8026062428884036953}
   coolDownBar: {fileID: 0}
   infoPanelGate: {fileID: 0}
+  wallSlideSpeed: 0.1
 --- !u!1 &1787507147385214930
 GameObject:
   m_ObjectHideFlags: 0

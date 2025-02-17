@@ -16,7 +16,6 @@ public class Troll : Enemy
     }
 }
 
-// Çekiç ver
-// Oyuncuyu kovalıycak
+// Oyuncuyu kovalÄ±ycak
 // platformdan platforma gidebilcek
-// Çekiçle yere vursun
+// Ã‡ekiÃ§le yere vursun

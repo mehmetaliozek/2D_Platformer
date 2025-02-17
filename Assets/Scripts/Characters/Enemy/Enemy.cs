@@ -76,7 +76,7 @@ public abstract class Enemy : Character
         isGrounded = Physics2D.OverlapCircle(ground.position, groundCheckRadius, groundLayer);
         RaycastHit2D hit = Physics2D.Linecast(basePosition, endPosition, groundLayer);
 
-        if ((hit.collider != null && hit.collider.CompareTag(Tag.Ground.ToString()) && isGrounded) || moveInput == 1)
+        if (hit.collider != null && hit.collider.CompareTag(Tag.Ground.ToString()) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, stat.jumpForce);
         }

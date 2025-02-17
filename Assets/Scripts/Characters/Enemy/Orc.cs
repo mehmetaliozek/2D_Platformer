@@ -68,7 +68,7 @@ public class Orc : Enemy
 
             if (distance >= 2)
             {
-                rb.linearVelocity = new Vector2(transform.localScale.x * stat.moveSpeed * 2.5f, 0f);
+                rb.linearVelocity = new Vector2(transform.localScale.x * stat.moveSpeed * 2f, 0f);
 
                 if (IsOnEdge())
                 {

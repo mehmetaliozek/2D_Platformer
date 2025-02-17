@@ -321,7 +321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stat:
     health: 110
-    moveSpeed: 2.5
+    moveSpeed: 1.5
     jumpForce: 15
     damage: 20
   roll:

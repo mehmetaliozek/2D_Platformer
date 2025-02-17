@@ -10,14 +10,20 @@ public class Player : Character
     private Weapon weapon;
     private bool isInGate;
     private bool isGetKey;
+    private bool isTouchingWall;
+    private bool isWallSliding;
+    private bool canJump;
+    private bool moveWithAcceleration;
 
-    [SerializeField]
-    private ParticleSystem dust;
-    [SerializeField]
-    private Bar coolDownBar;
+    [SerializeField] private ParticleSystem dust;
+    [SerializeField] private Bar coolDownBar;
+    [SerializeField] private GameObject infoPanelGate;
 
-    [SerializeField]
-    private GameObject infoPanelGate;
+    private int amountOfJumps = 1;
+    private int amountOfJumpsLeft;
+    public float wallSlideSpeed;
+    public float airDragMultiplier = 0.9f;
+    private Vector2 wallJumpDirection = new Vector2(-1, 1);
 
     private void Awake()
     {
@@ -35,6 +41,8 @@ public class Player : Character
         coolDownBar.SetMaxValue(1);
         coolDownBar.animationDuration = roll.rollingCooldown * 2;
 
+        amountOfJumpsLeft = amountOfJumps;
+
         HitEvent += (_, _) =>
         {
             Camera.main.GetComponent<CameraController>().TriggerShake(0.1f);
@@ -44,7 +52,10 @@ public class Player : Character
     private void Update()
     {
         if (CheckCharacterState()) return;
+
         float moveInput = Input.GetAxis("Horizontal");
+        UpdateChecks(moveInput);
+
         Move(moveInput);
         Turn(moveInput);
         Jump(moveInput);
@@ -53,44 +64,105 @@ public class Player : Character
         Dive();
     }
 
-    private void Dive()
+
+    private void UpdateChecks(float moveInput)
     {
-        if (Input.GetKeyDown(KeyCode.S) && !isGrounded)
+        isGrounded = Physics2D.OverlapCircle(ground.position, groundCheckRadius, groundLayer);
+        isTouchingWall = Physics2D.OverlapPoint(transform.position + Vector3.right * moveInput * 0.5f, groundLayer);
+        isWallSliding = isTouchingWall && !isGrounded && !Mathf.Approximately(moveInput, 0) && rb.linearVelocity.y < 0;
+
+        if (isTouchingWall)
         {
-            StartCoroutine(dive.DiveCoroutine(rb, tr, this));
+            moveWithAcceleration = true;
+        }
+        else if (isGrounded)
+        {
+            moveWithAcceleration = false;
         }
     }
 
     protected override void Move(float moveInput)
     {
-        rb.linearVelocity = new Vector2(moveInput * stat.moveSpeed, rb.linearVelocity.y);
+        if (isGrounded)
+        {
+            rb.linearVelocity = new Vector2(stat.moveSpeed * moveInput, rb.linearVelocity.y);
+        }
+        else if (!isWallSliding && !Mathf.Approximately(moveInput, 0))
+        {
+            rb.AddForce(new Vector2(stat.moveSpeed * moveInput, 0));
+            if (Mathf.Abs(rb.linearVelocity.x) > stat.moveSpeed)
+            {
+                rb.linearVelocity = new Vector2(stat.moveSpeed * Mathf.Sign(rb.linearVelocity.x), rb.linearVelocity.y);
+            }
+        }
+        else if (!isWallSliding)
+        {
+            if (moveWithAcceleration)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x * airDragMultiplier, rb.linearVelocity.y);
+            }
+            else
+            {
+                rb.linearVelocity = new Vector2(stat.moveSpeed * moveInput, rb.linearVelocity.y);
+            }
+        }
+
+        if (isWallSliding && rb.linearVelocity.y < -wallSlideSpeed)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -wallSlideSpeed);
+        }
         animator.SetFloat(AnimationParametre.Velocity.ToString(), Mathf.Abs(moveInput));
     }
 
     protected override void Turn(float moveInput)
     {
-        if (moveInput == 0) return;
+        if (Mathf.Approximately(moveInput, 0)) return;
 
         float newScaleX = Mathf.Sign(moveInput);
-        if (transform.localScale.x != newScaleX)
+        if (!Mathf.Approximately(transform.localScale.x, newScaleX))
         {
             transform.localScale = new Vector3(newScaleX, 1, 1);
-            if (isGrounded) dust.Play();
+            if (isGrounded && dust != null) dust.Play();
         }
     }
 
     protected override void Jump(float moveInput)
     {
-        isGrounded = Physics2D.OverlapCircle(ground.position, groundCheckRadius, groundLayer);
+        if ((isGrounded && rb.linearVelocity.y <= 0) || isWallSliding)
+            amountOfJumpsLeft = amountOfJumps;
 
-        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && isGrounded)
+        canJump = amountOfJumpsLeft > 0;
+
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
         {
-            dust.Play();
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, stat.jumpForce);
+            if (canJump && !isWallSliding)
+            {
+                dust.Play();
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, stat.jumpForce);
+                amountOfJumpsLeft--;
+            }
+            else if (isWallSliding && Mathf.Approximately(moveInput, 0) && canJump)
+            {
+                dust.Play();
+                isWallSliding = false;
+                amountOfJumpsLeft--;
+                Vector2 force = new Vector2(stat.jumpForce * wallJumpDirection.x * -Mathf.Sign(transform.localScale.x),
+                                            stat.jumpForce * wallJumpDirection.y);
+                rb.AddForce(force, ForceMode2D.Impulse);
+            }
+            else if ((isWallSliding || isTouchingWall) && !Mathf.Approximately(moveInput, 0) && canJump)
+            {
+                dust.Play();
+                isWallSliding = false;
+                amountOfJumpsLeft--;
+                Vector2 force = new Vector2(stat.jumpForce * wallJumpDirection.x * moveInput,
+                                            stat.jumpForce * wallJumpDirection.y);
+                rb.AddForce(force, ForceMode2D.Impulse);
+            }
         }
 
-        animator.SetBool(AnimationParametre.IsJumpIdle.ToString(), !isGrounded && moveInput == 0);
-        animator.SetBool(AnimationParametre.IsJumpRun.ToString(), !isGrounded && moveInput != 0);
+        animator.SetBool(AnimationParametre.IsJumpIdle.ToString(), !isGrounded && Mathf.Approximately(moveInput, 0));
+        animator.SetBool(AnimationParametre.IsJumpRun.ToString(), !isGrounded && !Mathf.Approximately(moveInput, 0));
     }
 
     protected override void Roll()
@@ -117,7 +189,14 @@ public class Player : Character
 
     protected override void Attack()
     {
-        if (Input.GetKey(KeyCode.Mouse0)) weapon.Attack();
+        if (Input.GetKey(KeyCode.Mouse0))
+            weapon.Attack();
+    }
+
+    private void Dive()
+    {
+        if (Input.GetKeyDown(KeyCode.S) && !isGrounded)
+            StartCoroutine(dive.DiveCoroutine(rb, tr, this));
     }
 
     protected override bool CheckCharacterState()
@@ -125,9 +204,8 @@ public class Player : Character
         if (isInGate)
         {
             Vector3 viewportPos = Camera.main.WorldToViewportPoint(transform.position);
-            Vector3 objScale = transform.localScale / 2;
-
-            if (viewportPos.y - objScale.y > 1)
+            Vector3 halfScale = transform.localScale / 2f;
+            if (viewportPos.y - halfScale.y > 1)
             {
                 LevelManager.Instance.CompleteLevel();
                 isInGate = false;
@@ -141,10 +219,7 @@ public class Player : Character
         return false;
     }
 
-    public void SetKey()
-    {
-        isGetKey = true;
-    }
+    public void SetKey() => isGetKey = true;
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -163,17 +238,15 @@ public class Player : Character
         if (other.gameObject.CompareTag(Tag.Gate.ToString()) && isGetKey)
         {
             if (roll.isRolling)
-            {
                 RollStop();
-            }
+
             isInGate = true;
             Camera.main.GetComponent<CameraController>().LevelEnding();
             rb.linearVelocity = Vector2.zero;
             rb.AddForceY(50f, ForceMode2D.Impulse);
 
-            int currentLevel = int.Parse(SceneManager.GetActiveScene().name.Split(" ")[1]);
+            int currentLevel = int.Parse(SceneManager.GetActiveScene().name.Split(' ')[1]);
             int openedLevelCount = PlayerPrefs.GetInt(PlayerPrefKey.OpenedLevelCount, 1);
-
             if (currentLevel == openedLevelCount)
             {
                 openedLevelCount++;
@@ -182,7 +255,7 @@ public class Player : Character
         }
         else
         {
-            //TODO anahtar isteme gelsin
+            // TODO: Anahtar isteme ekraný veya bilgi paneli gösterilebilir.
         }
     }
 
@@ -190,7 +263,7 @@ public class Player : Character
     {
         if (other.gameObject.CompareTag(Tag.Gate.ToString()) && !isGetKey)
         {
-            //TODO anahtar isteme gitsin
+            // TODO: Anahtar isteme ekraný tetiklenebilir.
         }
     }
 }

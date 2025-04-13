@@ -293,7 +293,6 @@ MonoBehaviour:
     knockbackingPower: 10
     knockbackingTime: 0.2
     knockbackingResistance: 1
-  damageParticle: {fileID: 9003973705220351779}
   healtBar: {fileID: 4157241614885030134}
   animator: {fileID: 5861043708762602825}
   ground: {fileID: 3399865900952385992}
@@ -302,11 +301,12 @@ MonoBehaviour:
     m_Bits: 128
   groundCheckRadius: 0.1
   type: 3
-  range: 0
+  range: 15
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
   visionRange: 2
+  damageParticle: {fileID: 9003973705220351779}
   dive:
     isDiving: 0
     particle: {fileID: 1135377521635136482}
